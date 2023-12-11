@@ -11,12 +11,20 @@ function App() {
       <div
         draggable
         onDragStart={ (e) => {
-          console.log('onDragStart');
           e.dataTransfer.setData('text', 'apenas um teste');
         } }
         onDragEnd={ (e) => console.log('onDragEnd') }
       >
         apenas um teste
+      </div>
+      <div
+        draggable
+        onDragStart={ (e) => {
+          e.dataTransfer.setData('text', 'eita testando');
+        } }
+        onDragEnd={ (e) => console.log('onDragEnd') }
+      >
+        eita testando
       </div>
 
       <div
@@ -33,10 +41,36 @@ function App() {
           setItens((prev) => [...prev, item]);
         } }
       >
-        a
         {itens && itens.map((item, index) => (
-          <p key={ index }>{item}</p>
+          <p
+            draggable
+            onDragStart={ (e) => {
+              console.log(e.detail);
+              e.dataTransfer.setData('text', item);
+            } }
+            onDragEnd={ (e) => console.log('onDragEnd') }
+            key={ index }
+          >
+            {item}
+
+          </p>
         ))}
+      </div>
+      <div
+        className="w-52 h-52 border border-black"
+        onDragEnter={ (e) => console.log('enterTrash') }
+        onDragLeave={ (e) => console.log('leaveTrash') }
+        onDragOver={ (e) => {
+          e.preventDefault(); console.log('overTrash');
+        } }
+        onDrop={ (e) => {
+          e.preventDefault();
+          const item = e.dataTransfer.getData('text');
+          console.log(item);
+          setItens((prev) => [...prev.filter((itF) => itF !== item)]);
+        } }
+      >
+        trash
       </div>
     </>
   );
