@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import Dropavel from './Components/Dropavel';
 
 function App() {
   const [itens, setItens] = useState<string[]>([]);
@@ -33,68 +34,8 @@ function App() {
         </div>
 
         <section className="flex flex-row">
-          <div
-            className="w-96 h-96 border border-black"
-            onDragEnter={ (e) => console.log('onDragEnter') }
-            onDragLeave={ (e) => console.log('onDragLeave') }
-            onDragOver={ (e) => {
-              e.preventDefault(); console.log('onDragOver');
-            } }
-            onDrop={ (e) => {
-              e.preventDefault();
-              const item = e.dataTransfer.getData('text');
-              console.log(item);
-              setItens((prev) => [...prev, item]);
-              setItens2((prev) => [...prev.filter((i) => i !== item)]);
-              setTarefas((prev) => [...prev.filter((itF) => itF !== item)]);
-            } }
-          >
-            {itens && itens.map((item, index) => (
-              <p
-                draggable
-                onDragStart={ (e) => {
-                  // console.log(e.detail);
-                  e.dataTransfer.setData('text', item);
-                } }
-                onDragEnd={ (e) => console.log('onDragEnd') }
-                key={ index }
-              >
-                {item}
-
-              </p>
-            ))}
-          </div>
-          <div
-            className="w-96 h-96 border border-black"
-            onDragEnter={ (e) => console.log('onDragEnter') }
-            onDragLeave={ (e) => console.log('onDragLeave') }
-            onDragOver={ (e) => {
-              e.preventDefault(); console.log('onDragOver');
-            } }
-            onDrop={ (e) => {
-              e.preventDefault();
-              const item = e.dataTransfer.getData('text');
-              console.log(item);
-              setItens2((prev) => [...prev, item]);
-              setItens((prev) => [...prev.filter((i) => i !== item)]);
-              setTarefas((prev) => [...prev.filter((itF) => itF !== item)]);
-            } }
-          >
-            {itens2 && itens2.map((item, index) => (
-              <p
-                draggable
-                onDragStart={ (e) => {
-                  // console.log(e.detail);
-                  e.dataTransfer.setData('text', item);
-                } }
-                onDragEnd={ (e) => console.log('onDragEnd') }
-                key={ index }
-              >
-                {item}
-
-              </p>
-            ))}
-          </div>
+          <Dropavel listName="lista1" />
+          <Dropavel listName="lista2" />
           <div
             className="w-52 h-52 border border-black"
             onDragEnter={ (e) => console.log('enterTrash') }

@@ -1,5 +1,8 @@
+export type ListasType = {
+  [key: string]: []
+};
+
 export type ListasContextType = {
-  listas: {
-    [key: string] : []
-  }
+  listas: ListasType,
+  setListas: (p: ListasType) => void,
 };

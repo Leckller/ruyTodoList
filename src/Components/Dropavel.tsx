@@ -1,4 +1,8 @@
-function Dropavel({ listName }: { listName: string[] }) {
+import { useContext } from 'react';
+import ListasContext from '../context/ListasContext';
+
+function Dropavel({ listName }: { listName: string }) {
+  const { listas, setListas } = useContext(ListasContext);
   return (
     <div
       className="w-96 h-96 border border-black"
@@ -10,14 +14,17 @@ function Dropavel({ listName }: { listName: string[] }) {
       onDrop={ (e) => {
         e.preventDefault();
         const item = e.dataTransfer.getData('text');
-        console.log(item);
+        if (listas[listName]) {
+          setListas((prev) => ({ ...prev, [listName]: [...listas[listName], item] }));
+        } else {
+          setListas((prev) => ({ ...prev, [listName]: [item] }));
+        }
       } }
     >
-      {listName && listName.map((item, index) => (
+      {listas[listName] && listas[listName].map((item, index) => (
         <p
           draggable
           onDragStart={ (e) => {
-            // console.log(e.detail);
             e.dataTransfer.setData('text', item);
           } }
           onDragEnd={ (e) => console.log('onDragEnd') }
