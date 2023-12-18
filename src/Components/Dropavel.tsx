@@ -1,8 +1,10 @@
 import { useContext } from 'react';
 import ListasContext from '../context/ListasContext';
+import { TarefaType } from '../Types';
 
 function Dropavel({ listName }: { listName: string }) {
   const { listas, setListas } = useContext(ListasContext);
+  console.log(listas)
   return (
     <div
       className="w-96 h-96 border border-black"
@@ -25,12 +27,12 @@ function Dropavel({ listName }: { listName: string }) {
         <p
           draggable
           onDragStart={ (e) => {
-            e.dataTransfer.setData('text', item);
+            e.dataTransfer.setData('text', JSON.stringify(item));
           } }
           onDragEnd={ (e) => console.log('onDragEnd') }
           key={ index }
         >
-          {item}
+          {JSON.parse(item).text}
 
         </p>
       ))}

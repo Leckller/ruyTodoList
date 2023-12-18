@@ -1,68 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Dropavel from './Components/Dropavel';
+import Trash from './Components/Trash';
+import { TarefaType } from './Types';
 
 function App() {
-  const [itens, setItens] = useState<string[]>([]);
-  const [itens2, setItens2] = useState<string[]>([]);
-  const [novaTarefa, setNovaTarefa] = useState('');
-  const [tarefas, setTarefas] = useState<string[]>([]);
-  useEffect(() => {
-    console.log(itens);
-  }, [itens]);
+  const [novaTarefa, setNovaTarefa] = useState<TarefaType>({
+    listName: '',
+    text: '',
+  });
+  const [tarefas, setTarefas] = useState<TarefaType[]>([]);
   return (
     <main className="w-screen bg-slate-800 h-screen flex flex-row">
       <div className="w-1/2">
-        <div
-          draggable
-          onDragStart={ (e) => {
-            e.dataTransfer.setData('text', 'apenas um teste');
-          } }
-          onDragEnd={ (e) => console.log('onDragEnd') }
-        >
-          apenas um teste
-        </div>
-        <div
-          draggable
-          onDragStart={ (e) => {
-            console.log('onDragStart');
-            e.dataTransfer.setData('text', 'eita testando');
-          } }
-          onDragEnd={ (e) => console.log('onDragEnd') }
-        >
-          eita testando
-        </div>
-
         <section className="flex flex-row">
           <Dropavel listName="lista1" />
           <Dropavel listName="lista2" />
-          <div
-            className="w-52 h-52 border border-black"
-            onDragEnter={ (e) => console.log('enterTrash') }
-            onDragLeave={ (e) => console.log('leaveTrash') }
-            onDragOver={ (e) => {
-              e.preventDefault(); console.log('overTrash');
-            } }
-            onDrop={ (e) => {
-              e.preventDefault();
-              const item = e.dataTransfer.getData('text');
-              console.log(item);
-              setItens((prev) => [...prev.filter((itF) => itF !== item)]);
-              setItens2((prev) => [...prev.filter((itF) => itF !== item)]);
-              setTarefas((prev) => [...prev.filter((itF) => itF !== item)]);
-            } }
-          >
-            trash
-          </div>
+          <Trash/>
         </section>
       </div>
+
       <div className="w-1/2 flex flex-col items-center pt-20">
         <label htmlFor="tarefa">
           Tarefa
           <input
             className="text-black"
-            onChange={ ({ target: { value } }) => setNovaTarefa(value) }
-            value={ novaTarefa }
+            onChange={ ({ target: { value } }) => setNovaTarefa({...novaTarefa, text: value}) }
+            value={ novaTarefa.text }
             id="tarefa"
             type="text"
           />
@@ -74,16 +38,16 @@ function App() {
 
         </button>
         <div>
-          {tarefas && tarefas.map((tf) => (
+          {tarefas && tarefas.map((tf,i) => (
             <p
               draggable
               onDragStart={ (e) => {
-                e.dataTransfer.setData('text', tf);
+                e.dataTransfer.setData('text', JSON.stringify(tf));
               } }
-              onDragEnd={ (e) => console.log('onDragEnd') }
-              key={ tf }
+              onDragEnd={ () => console.log('onDragEnd') }
+              key={ i }
             >
-              {tf}
+              {tf.text}
             </p>
           ))}
         </div>
